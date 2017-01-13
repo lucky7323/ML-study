@@ -17,6 +17,7 @@ def download(url, filename):
 
 base_url = 'http://yann.lecun.com/exdb/mnist/'
 
+def parse_labels(filename):
     with gzip.open(filename, 'rb') as fh:
         magic, num_data = struct.unpack(">II", fh.read(8))
         return np.array(array.array("B", fh.read()), dtype=np.uint8)
@@ -92,7 +93,7 @@ plt.show()
 for i in range(1000):
     W2 -= grad_fun_W1(W2,b0,i%300) * 0.5
     b2 -= grad_fun_b1(W0,b2,i%300) * 0.5
-    if i%00==0 or i==1000:
+    if i%100==0 or i==1000:
         arr2[int(i/100)] = cross_entropy(W2,b2)
 plt.plot(arr2, 'r--')
 plt.show()
