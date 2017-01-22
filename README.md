@@ -11,3 +11,11 @@
 * (100 random batch / 1000 training / 0.5 learning rate) = 86~89% accuracy
 * (200 order batch / 1000 training / 0.5 learning rate) = 90.35% accuracy
 * cost function plot 해보니 계속 감소하는게 아니라 noise가 있었다. 그래서 random batch의 경우 70% accuracy가 나오기도 했다.
+
+####[Assignment3 description]####
+* The goal of this assingment is to implement a very simple feedforward neural network with numpy and autograd.
+* The number of hidden layer and hidden units are not fixed. You can design your own network architecture.
+* Dropout should be used for regularization.
+
+####[Assignment2 result]####
+* 
