@@ -51,7 +51,7 @@ def lsoftmax(x):
 x = train_images.reshape([60000, 28*28])
 
 # cross-entropy (random)
-def cross_entropy(W, b):
+def cross_entropy(W, b):            
     ran = 100 * (np.random.random_integers(1,600) - 1)
     x_sample = x[ran + np.arange(100)]
     y_sample = y_[ran + np.arange(100)]
@@ -77,7 +77,7 @@ b1 = np.zeros(10)
 W2 = np.zeros((784,10))
 b2 = np.zeros(10)
 
-arr1 = np.zeros(11)
+arr1 = np.zeros(11) 
 arr2 = np.zeros(11)
 
 #training (random)
