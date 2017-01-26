@@ -88,7 +88,7 @@ for i in range(1000):
         arr1[int(i/100)] = cross_entropy(W1,b1)
 plt.plot(arr1, 'r--')
 plt.show()
-
+ 
 #training (sequence)
 for i in range(1000):
     W2 -= grad_fun_W1(W2,b0,i%300) * 0.5
