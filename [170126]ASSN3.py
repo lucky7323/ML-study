@@ -39,11 +39,12 @@ test_images  = parse_images('data/t10k-images-idx3-ubyte.gz')
 test_labels  = parse_labels('data/t10k-labels-idx1-ubyte.gz')
 
 # parameters
-batch_size = 200
-epochs = 100
+batch_size = 100
+epochs = 200
 learning_rate = 0.001
-drop_rate = 0.5
+drop_rate = 0.3
 hidden_size = 256
+sigma = 0.1
 
 # falttening x & convert one-hot vector y
 x = train_images.reshape([60000, 28*28])
@@ -51,13 +52,21 @@ y_ = np.zeros((60000,10))
 y_[np.arange(60000), train_labels] = 1
 
 # weights and bias
-W1 = 2 * np.random.rand(784,hidden_size) - 1
-W2 = 2 * np.random.rand(hidden_size,hidden_size) - 1
-W3 = 2 * np.random.rand(hidden_size,10) - 1
+W1 = np.random.normal(0, sigma, (784,hidden_size))
+W2 = np.random.normal(0, sigma, (hidden_size,hidden_size))
+W3 = np.random.normal(0, sigma, (hidden_size,10))
 
-B1 = 2 * np.random.rand(hidden_size) - 1
-B2 = 2 * np.random.rand(hidden_size) - 1
-B3 = 2 * np.random.rand(10) - 1
+B1 = np.random.normal(0, sigma, hidden_size)
+B2 = np.random.normal(0, sigma, hidden_size)
+B3 = np.random.normal(0, sigma, 10)
+
+# W1 = 2 * np.random.rand(784,hidden_size) - 1
+# W2 = 2 * np.random.rand(hidden_size,hidden_size) - 1
+# W3 = 2 * np.random.rand(hidden_size,10) - 1
+
+# B1 = 2 * np.random.rand(hidden_size) - 1
+# B2 = 2 * np.random.rand(hidden_size) - 1
+# B3 = 2 * np.random.rand(10) - 1
 
 # plotting variable
 arr = np.zeros(epochs)
