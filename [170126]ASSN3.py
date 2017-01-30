@@ -43,7 +43,8 @@ batch_size = 100
 epochs = 200
 learning_rate = 0.001
 drop_rate = 0.3
-hidden_size = 256
+hidden1_size = 273
+hidden2_size = 273
 sigma = 0.1
 
 # falttening x & convert one-hot vector y
@@ -52,13 +53,21 @@ y_ = np.zeros((60000,10))
 y_[np.arange(60000), train_labels] = 1
 
 # weights and bias
-W1 = np.random.normal(0, sigma, (784,hidden_size))
-W2 = np.random.normal(0, sigma, (hidden_size,hidden_size))
-W3 = np.random.normal(0, sigma, (hidden_size,10))
+W1 = np.random.normal(0, sigma, (784,hidden1_size))
+W2 = np.random.normal(0, sigma, (hidden1_size,hidden2_size))
+W3 = np.random.normal(0, sigma, (hidden2_size,10))
 
-B1 = np.random.normal(0, sigma, hidden_size)
-B2 = np.random.normal(0, sigma, hidden_size)
+B1 = np.random.normal(0, sigma, hidden1_size)
+B2 = np.random.normal(0, sigma, hidden2_size)
 B3 = np.random.normal(0, sigma, 10)
+
+# W1 = np.random.randn(784,hidden_size) / np.sqrt(784/2)
+# W2 = np.random.randn(hidden_size,hidden_size) / np.sqrt(hidden_size/2)
+# W3 = np.random.randn(hidden_size,10) / np.sqrt(hidden_size/2)
+
+# B1 = np.random.randn(hidden_size) / np.sqrt(hidden_size/2)
+# B2 = np.random.randn(hidden_size) / np.sqrt(hidden_size/2)
+# B3 = np.random.randn(10) / np.sqrt(10/2)
 
 # W1 = 2 * np.random.rand(784,hidden_size) - 1
 # W2 = 2 * np.random.rand(hidden_size,hidden_size) - 1
@@ -106,12 +115,12 @@ grad_fun_B3 = grad(cross_entropy, argnum=7)
 # training
 for i in range(epochs):
     batch_xs, batch_ys = batch(x, y_, batch_size)
-    W1 -= grad_fun_W1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
-    W2 -= grad_fun_W2(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
-    W3 -= grad_fun_W3(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
-    B1 -= grad_fun_B1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
-    B2 -= grad_fun_B2(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     B3 -= grad_fun_B3(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
+    W3 -= grad_fun_W3(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
+    B2 -= grad_fun_B2(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
+    W2 -= grad_fun_W2(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
+    B1 -= grad_fun_B1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
+    W1 -= grad_fun_W1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     arr[i] = cross_entropy(batch_xs, batch_ys, W1,W2,W3,B1,B2,B3)
     print(i+1, ": %0.2f" % arr[i])
 
