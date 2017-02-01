@@ -40,11 +40,11 @@ test_labels  = parse_labels('data/t10k-labels-idx1-ubyte.gz')
 
 # parameters
 batch_size = 100
-epochs = 200
-learning_rate = 0.001
+epochs = 1000
+learning_rate = 0.5
 drop_rate = 0.3
-hidden1_size = 273
-hidden2_size = 273
+hidden1_size = 256
+hidden2_size = 256
 sigma = 0.1
 
 # falttening x & convert one-hot vector y
@@ -60,22 +60,6 @@ W3 = np.random.normal(0, sigma, (hidden2_size,10))
 B1 = np.random.normal(0, sigma, hidden1_size)
 B2 = np.random.normal(0, sigma, hidden2_size)
 B3 = np.random.normal(0, sigma, 10)
-
-# W1 = np.random.randn(784,hidden_size) / np.sqrt(784/2)
-# W2 = np.random.randn(hidden_size,hidden_size) / np.sqrt(hidden_size/2)
-# W3 = np.random.randn(hidden_size,10) / np.sqrt(hidden_size/2)
-
-# B1 = np.random.randn(hidden_size) / np.sqrt(hidden_size/2)
-# B2 = np.random.randn(hidden_size) / np.sqrt(hidden_size/2)
-# B3 = np.random.randn(10) / np.sqrt(10/2)
-
-# W1 = 2 * np.random.rand(784,hidden_size) - 1
-# W2 = 2 * np.random.rand(hidden_size,hidden_size) - 1
-# W3 = 2 * np.random.rand(hidden_size,10) - 1
-
-# B1 = 2 * np.random.rand(hidden_size) - 1
-# B2 = 2 * np.random.rand(hidden_size) - 1
-# B3 = 2 * np.random.rand(10) - 1
 
 # plotting variable
 arr = np.zeros(epochs)
@@ -115,6 +99,7 @@ grad_fun_B3 = grad(cross_entropy, argnum=7)
 # training
 for i in range(epochs):
     batch_xs, batch_ys = batch(x, y_, batch_size)
+    batch_xs = batch_xs / 255.0 #data preprocessing
     B3 -= grad_fun_B3(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     W3 -= grad_fun_W3(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     B2 -= grad_fun_B2(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
@@ -122,22 +107,24 @@ for i in range(epochs):
     B1 -= grad_fun_B1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     W1 -= grad_fun_W1(batch_xs, batch_ys, W1, W2, W3, B1, B2, B3) * learning_rate
     arr[i] = cross_entropy(batch_xs, batch_ys, W1,W2,W3,B1,B2,B3)
-    print(i+1, ": %0.2f" % arr[i])
+    if ((i+1) % 100) == 0:
+        # evaluating
+        x_test = test_images.reshape([10000, 28*28])
+        y_answer = np.zeros((10000,10))
+        y_answer[np.arange(10000), test_labels] = 1
+
+        x_test = x_test / 255.0
+        H1_ = ReLU(np.matmul(x_test, W1) + B1)
+        H2_ = ReLU(np.matmul(H1_, W2) + B2)
+        y_predict = np.matmul(H2_, W3) + B3
+
+        accuracy = np.mean(np.equal(np.argmax(y_predict,1), np.argmax(y_answer,1))) * 100
+        print('[{} epoch] accuracy: {:.2f}%, cost: {:.2f}'.format(i+1, accuracy, arr[i]))
+        if (i+1)==epochs:
+            print('Accuracy : {:.2f}'.format(accuracy))
 
 # plotting loss function graph
-plt.plot(arr, 'r--')
+arr2 = arr[(np.arange(49)+1)*20]
+plt.plot(arr2, 'r--')
 plt.show()
-
-# evaluating
-x_test = test_images.reshape([10000, 28*28])
-y_answer = np.zeros((10000,10))
-y_answer[np.arange(10000), test_labels] = 1
-
-H1_ = ReLU(np.matmul(x_test, W1) + B1)
-H2_ = ReLU(np.matmul(H1_, W2) + B2)
-y_predict = np.matmul(H2_, W3) + B3
-
-accuracy = np.mean(np.equal(np.argmax(y_predict,1), np.argmax(y_answer,1))) * 100
-print("Accuracy : %0.2f%%" % accuracy)
-
 
