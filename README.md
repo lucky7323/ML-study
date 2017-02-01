@@ -8,14 +8,16 @@
 *  Details can be found in [Tensorflow tutorial](https://www.tensorflow.org/tutorials/mnist/beginners/).
 
 ####[Assignment2 result]####
-* (100 random batch / 1000 training / 0.5 learning rate) = 86~89% accuracy
-* (200 order batch / 1000 training / 0.5 learning rate) = 90.35% accuracy
-* cost function plot 해보니 계속 감소하는게 아니라 noise가 있었다. 그래서 random batch의 경우 70% accuracy가 나오기도 했다.
+* (100 random batch / 1000 training / 0.5 learning rate) = 89~92% accuracy
+* data preprocessing 전에는 80후반 accuracy, 후에는 92%까지 오름.
+* Weight, bias initialize는 accuracy에 큰 영향이 없었음.
 
 ####[Assignment3 description]####
 * The goal of this assingment is to implement a very simple feedforward neural network with numpy and autograd.
 * The number of hidden layer and hidden units are not fixed. You can design your own network architecture.
 * Dropout should be used for regularization.
 
-####[Assignment2 result]####
-* 
+####[Assignment3 result]####
+* Weight, bias의 initialize를 0~1의 random값으로 했을 때 학습이 제대로 되지 않았다.
+* Weight, bias를 mean=0, std=0.1의 normal distribution으로 initialize하니 85%정도 까지 올랐다.
+* data preprocessing을 해주고 learning rate도 0.5로 올리는 등 parameter를 좀 변경하니 96%까지 accuracy가 올랐다.
