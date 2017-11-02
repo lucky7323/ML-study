@@ -1,7 +1,7 @@
 # ML-study
 2016 winter ~ 2017 spring study with python
 
-###[Assignment2 - Linear Classifier]###
+### [Assignment2 - Linear Classifier]
 __description__
 * The goal of this assignment is to make a simple linear classifer for MNIST, which contains 60,000 handwritten digit images with 10 classes.
 * The most important thing for this assignment is to design a linear classifier from scratch only using numpy and autograd. (No tensorflow!)
@@ -15,7 +15,7 @@ __result__
 
 - - - -
 
-###[Assignment3 - Neural Network]###
+### [Assignment3 - Neural Network]
 __description__
 * The goal of this assingment is to implement a very simple feedforward neural network with numpy and autograd.
 * The number of hidden layer and hidden units are not fixed. You can design your own network architecture.
